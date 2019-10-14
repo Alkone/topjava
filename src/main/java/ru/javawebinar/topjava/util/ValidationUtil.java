@@ -4,8 +4,6 @@ package ru.javawebinar.topjava.util;
 import ru.javawebinar.topjava.model.AbstractBaseEntity;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
-import java.util.Objects;
-
 public class ValidationUtil {
 
     public static <T> T checkNotFoundWithId(T object, int id) {
@@ -25,15 +23,6 @@ public class ValidationUtil {
         if (!found) {
             throw new NotFoundException("Not found entity with " + msg);
         }
-    }
-
-    public static <T> T checkUserId(T object, int id) {
-        if (Objects.isNull(object)) throw new NotFoundException("Invalid operation by user " + id);
-        return object;
-    }
-
-    public static void checkUserId(boolean check, int id) {
-        if (!check) throw new NotFoundException("Invalid operation by user " + id);
     }
 
     public static void checkNew(AbstractBaseEntity entity) {

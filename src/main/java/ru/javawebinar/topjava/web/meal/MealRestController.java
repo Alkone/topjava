@@ -25,6 +25,10 @@ public class MealRestController {
     @Autowired
     private MealService service;
 
+    public List<MealTo> getAll() {
+        return getTos(service.getAll(authUserId()), authUserCaloriesPerDay());
+    }
+
     public List<MealTo> getAll(LocalDate startDate, LocalDate endDate,
                                LocalTime startTime, LocalTime endTime) {
         log.info("getAll with startDate{}, endDate{}, startTime{}, endTime{}",
@@ -38,9 +42,9 @@ public class MealRestController {
                 authUserCaloriesPerDay());
     }
 
-    public void get(int id) {
+    public Meal get(int id) {
         log.info("get {}", id);
-        service.get(authUserId(), id);
+        return service.get(authUserId(), id);
     }
 
     public void create(Meal meal) {
