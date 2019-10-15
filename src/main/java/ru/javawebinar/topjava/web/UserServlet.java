@@ -20,6 +20,6 @@ public class UserServlet extends HttpServlet {
         if (id != null) {
             SecurityUtil.setAuthUserId(Integer.parseInt(id));
         }
-        response.sendRedirect("index.html");
+        response.sendRedirect("meals");
     }
 }

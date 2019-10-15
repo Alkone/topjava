@@ -33,11 +33,11 @@ public class MealService {
     }
 
     public List<Meal> getAll(int userId, LocalDate startDate, LocalDate endDate) {
-        return checkNotFoundWithId(repository.getAll(userId, startDate, endDate), userId);
+        return repository.getAll(userId, startDate, endDate);
     }
 
     public List<Meal> getAll(int userId) {
-        return checkNotFoundWithId(repository.getAll(userId), userId);
+        return repository.getAll(userId);
     }
 
     public Meal update(int userId, Meal meal) {
