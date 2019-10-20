@@ -5,29 +5,44 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Meal extends AbstractBaseEntity {
-    private final LocalDateTime dateTime;
+    private LocalDateTime eatenDateTime;
 
-    private final String description;
+    private String description;
 
-    private final int calories;
+    private int calories;
 
-    public Meal(LocalDateTime dateTime, String description, int calories) {
-        this(null, dateTime, description, calories);
+    public Meal() {
     }
 
-    public Meal(Integer id, LocalDateTime dateTime, String description, int calories) {
+    public Meal(LocalDateTime eatenDateTime, String description, int calories) {
+        this(null, eatenDateTime, description, calories);
+    }
+
+    public Meal(Integer id, LocalDateTime eatenDateTime, String description, int calories) {
         super(id);
-        this.dateTime = dateTime;
+        this.eatenDateTime = eatenDateTime;
         this.description = description;
         this.calories = calories;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public void setEatenDateTime(LocalDateTime eatenDateTime) {
+        this.eatenDateTime = eatenDateTime;
+    }
+
+    public LocalDateTime getEatenDateTime() {
+        return eatenDateTime;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public void setCalories(int calories) {
+        this.calories = calories;
     }
 
     public int getCalories() {
@@ -35,18 +50,18 @@ public class Meal extends AbstractBaseEntity {
     }
 
     public LocalDate getDate() {
-        return dateTime.toLocalDate();
+        return eatenDateTime.toLocalDate();
     }
 
     public LocalTime getTime() {
-        return dateTime.toLocalTime();
+        return eatenDateTime.toLocalTime();
     }
 
     @Override
     public String toString() {
         return "Meal{" +
                 "id=" + id +
-                ", dateTime=" + dateTime +
+                ", dateTime=" + eatenDateTime +
                 ", description='" + description + '\'' +
                 ", calories=" + calories +
                 '}';

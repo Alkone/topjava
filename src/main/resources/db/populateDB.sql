@@ -1,11 +1,28 @@
-DELETE FROM user_roles;
-DELETE FROM users;
+DELETE
+FROM user_roles;
+DELETE
+FROM users;
 ALTER SEQUENCE global_seq RESTART WITH 100000;
 
-INSERT INTO users (name, email, password) VALUES
-  ('User', 'user@yandex.ru', 'password'),
-  ('Admin', 'admin@gmail.com', 'admin');
+INSERT INTO users (name, email, password)
+VALUES ('User', 'user@yandex.ru', 'password'),
+       ('Admin', 'admin@gmail.com', 'admin');
 
-INSERT INTO user_roles (role, user_id) VALUES
-  ('ROLE_USER', 100000),
-  ('ROLE_ADMIN', 100001);
+INSERT INTO user_roles (role, user_id)
+VALUES ('ROLE_USER', 100000),
+       ('ROLE_ADMIN', 100001);
+
+INSERT INTO meals (user_id, description, eaten_date_time, calories)
+VALUES (100000, 'Завтрак юзера', '10-16-2019 08:00:00', 500),
+       (100000, 'Обед юзера', '10-16-2019 14:00:00', 1000),
+       (100000, 'Ужин юзера', '10-16-2019 18:00:00', 600),
+       (100000, 'Завтрак юзера', '11-16-2019 8:00:00', 500),
+       (100000, 'Обед юзера', '11-16-2019 14:00:00', 800),
+       (100000, 'Ужин юзера', '11-16-2019 18:00:00', 600),
+
+       (100001, 'Завтрак админа', '10-16-2019 8:00:00', 500),
+       (100001, 'Обед админа', '10-16-2019 14:00:00', 1000),
+       (100001, 'Ужин админа', '10-16-2019 18:00:00', 600),
+       (100001, 'Завтрак админа', '11-16-2019 8:00:00', 500),
+       (100001, 'Обед админа', '11-16-2019 14:00:00', 800),
+       (100001, 'Ужин админа', '11-16-2019 18:00:00', 600);
