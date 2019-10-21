@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.service;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.bridge.SLF4JBridgeHandler;
@@ -17,18 +16,16 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static ru.javawebinar.topjava.MealTestData.SORTED_USER_MEALS;
-import static ru.javawebinar.topjava.MealTestData.assertMatch;
+import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
 
-@ContextConfiguration({
-        "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml"
-})
+@ContextConfiguration({"classpath:spring/spring-app.xml"})
 @RunWith(SpringRunner.class)
-@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF8"))
+@Sql(scripts = "classpath:db/populateDB.sql",
+        config = @SqlConfig(encoding = "UTF8"))
 public class MealServiceTest {
 
     static {
@@ -42,12 +39,12 @@ public class MealServiceTest {
 
     @Test
     public void get() {
-        assertMatch(service.get(SORTED_USER_MEALS[0].getId(), USER_ID), SORTED_USER_MEALS[0]);
+        assertMatch(service.get(USER_MEAL_MRN_EARLY_ID, USER_ID), USER_MEAL_MRN_EARLY);
     }
 
     @Test(expected = NotFoundException.class)
     public void getNotFound() {
-        service.get(SORTED_USER_MEALS[0].getId(), ADMIN_ID);
+        service.get(USER_MEAL_MRN_EARLY_ID, ADMIN_ID);
     }
 
     @Test
@@ -60,24 +57,24 @@ public class MealServiceTest {
 
     @Test(expected = NotFoundException.class)
     public void deleteNotFound() {
-        service.delete(SORTED_USER_MEALS[0].getId(), ADMIN_ID);
+        service.delete(USER_MEAL_MRN_EARLY_ID, ADMIN_ID);
     }
 
     @Test
     public void getBetweenDates() {
         List<Meal> mealsBetweenDates = service.getBetweenDates(
-                SORTED_USER_MEALS[0].getDate(), SORTED_USER_MEALS[2].getDate(), USER_ID);
-        assertMatch(mealsBetweenDates, Arrays.asList(SORTED_USER_MEALS[0], SORTED_USER_MEALS[1], SORTED_USER_MEALS[2]));
+                USER_MEAL_MRN_EARLY.getDate(), USER_MEAL_EVN_EARLY.getDate(), USER_ID);
+        assertMatch(mealsBetweenDates, Arrays.stream(SORTED_USER_MEALS).skip(3).collect(Collectors.toList()));
     }
 
     @Test
     public void getAll() {
-        Assert.assertEquals(service.getAll(USER_ID), Arrays.asList(SORTED_USER_MEALS));
+        assertMatch(service.getAll(USER_ID), Arrays.asList(SORTED_USER_MEALS));
     }
 
     @Test
     public void update() {
-        Meal meal = SORTED_USER_MEALS[1];
+        Meal meal = new Meal(USER_MEAL_MRN_EARLY);
         meal.setDescription("Updated meal");
         meal.setCalories(9999);
         service.update(meal, USER_ID);
@@ -86,15 +83,15 @@ public class MealServiceTest {
 
     @Test(expected = NotFoundException.class)
     public void updateNotFound() {
-        Meal meal = SORTED_USER_MEALS[1];
+        Meal meal = new Meal(USER_MEAL_MRN_EARLY);
         service.update(meal, ADMIN_ID);
     }
 
     @Test
     public void create() {
-        Meal createdMeal = new Meal(LocalDateTime.of(2019, Month.MAY, 11, 12, 0),
+        Meal meal = new Meal(LocalDateTime.of(2019, Month.MAY, 11, 12, 0),
                 "New", 9999);
-        service.update(createdMeal, USER_ID);
-        assertMatch(service.get(createdMeal.getId(), USER_ID), createdMeal);
+        service.update(meal, USER_ID);
+        assertMatch(service.get(meal.getId(), USER_ID), meal);
     }
 }

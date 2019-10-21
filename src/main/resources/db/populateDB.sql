@@ -12,7 +12,7 @@ INSERT INTO user_roles (role, user_id)
 VALUES ('ROLE_USER', 100000),
        ('ROLE_ADMIN', 100001);
 
-INSERT INTO meals (user_id, description, eaten_date_time, calories)
+INSERT INTO meals (user_id, description, date_time, calories)
 VALUES (100000, 'Завтрак юзера', '10-16-2019 08:00:00', 500),
        (100000, 'Обед юзера', '10-16-2019 14:00:00', 1000),
        (100000, 'Ужин юзера', '10-16-2019 18:00:00', 600),

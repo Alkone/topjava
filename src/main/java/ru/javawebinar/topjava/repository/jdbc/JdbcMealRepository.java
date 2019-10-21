@@ -39,13 +39,13 @@ public class JdbcMealRepository implements MealRepository {
                 .addValue("userId", userId)
                 .addValue("id", meal.getId())
                 .addValue("description", meal.getDescription())
-                .addValue("eatenDateTime", meal.getEatenDateTime())
+                .addValue("dateTime", meal.getDateTime())
                 .addValue("calories", meal.getCalories());
         if (meal.isNew()) {
             Number newId = insertMeal.executeAndReturnKey(map);
             meal.setId(newId.intValue());
         } else if (namedParameterJdbcTemplate.update(
-                "UPDATE meals SET description=:description, eaten_date_time=:eatenDateTime," +
+                "UPDATE meals SET description=:description, date_time=:dateTime," +
                         "calories=:calories WHERE id=:id AND user_id=:userId", map) == 0) {
             return null;
         }
@@ -65,12 +65,12 @@ public class JdbcMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getAll(int userId) {
-        return jdbcTemplate.query("SELECT * FROM meals WHERE user_id = ? ORDER BY eaten_date_time DESC", ROW_MAPPER, userId);
+        return jdbcTemplate.query("SELECT * FROM meals WHERE user_id = ? ORDER BY date_time DESC", ROW_MAPPER, userId);
     }
 
     @Override
     public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
         return jdbcTemplate.query("SELECT * FROM meals WHERE user_id = ? " +
-                "AND eaten_date_time BETWEEN ? AND ? ORDER BY eaten_date_time DESC", ROW_MAPPER, userId, startDate, endDate);
+                "AND date_time BETWEEN ? AND ? ORDER BY date_time DESC", ROW_MAPPER, userId, startDate, endDate);
     }
 }
