@@ -34,7 +34,7 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 public class MealServiceTest {
     private static final Logger log = LoggerFactory.getLogger(MealServiceTest.class);
 
-    private static String watcherLog = "\n";
+    private static String watcherLog = "\nTest - Time (ms)\n";
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -43,7 +43,8 @@ public class MealServiceTest {
     public Stopwatch stopwatch = new Stopwatch() {
         @Override
         protected void finished(long nanos, Description description) {
-            String tempLog = "Method " + description.getMethodName() + " is finished in " + nanos + " nanos";
+            double seconds = (double) nanos / 1_000_000.0;
+            String tempLog = description.getMethodName() + " - " + seconds;
             watcherLog += tempLog + "\n";
             log.info(tempLog);
             super.finished(nanos, description);
